@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>*INTEGRITY❤BANK*</title>
+
+    <style>
+        th, td {
+            padding: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<th:block th:include="mainboard"></th:block>
+
+<h2>Money Transfer</h2>
+
+<form action="/moneytransfer" method="post">
+    <div class="container col-lg-4">
+        <hr>
+        <h2>Do you want to transfer money?</h2>
+        <p>Please select from/to account and amount of money that you want to transfer</p>
+        <p>If you want to add money to account, "Transfer Money From Account"
+            select 0 and amount of money that you want to add</p>
+        <p>If you want to withdraw money from account, "Transfer Money To Account"
+            select 0 and amount of money that you want to withdraw</p>
+        <hr>
+
+        <label for="transfer_money_from_account"><b>Transfer Money From Account</b></label>
+        <input type="number" placeholder="From Account" class="form-control"
+               id="transfer_money_from_account" name="transfer_money_from_account" required>
+
+        <label for="transfer_money_to_account"><b>Transfer Money To Account</b></label>
+        <input type="number" placeholder="To Account" class="form-control"
+               id="transfer_money_to_account" name="transfer_money_to_account" required>
+
+        <label for="amount_of_money_transferred"><b>Amount Of Money</b></label>
+        <input type="text" placeholder="Enter Amount Of Money" class="form-control"
+               id="amount_of_money_transferred" name="amount_of_money_transferred" required>
+        <hr>
+        <button type="submit" class="registerbtn preview-iframe">Transfer Money</button>
+    </div>
+</form>
+
+</body>
+</html>

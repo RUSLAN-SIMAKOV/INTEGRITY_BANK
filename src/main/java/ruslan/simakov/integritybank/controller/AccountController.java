@@ -1,10 +1,8 @@
 package ruslan.simakov.integritybank.controller;
 
 import ruslan.simakov.integritybank.model.Account;
-import ruslan.simakov.integritybank.model.Client;
 import ruslan.simakov.integritybank.service.AccountService;
 import ruslan.simakov.integritybank.service.ClientService;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,6 @@ public class AccountController {
 
     @RequestMapping(value = "/clientaccounts", method = RequestMethod.GET)
     public String getAllAccounts(Model model, @RequestParam(name = "client_id") Long id) {
-
         List<Account> listAccounts = accountService.getClientAccounts(id);
         String clientName = clientService.findById(id).getName();
         model.addAttribute("account", listAccounts);
@@ -35,17 +32,8 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/addaccount", method = RequestMethod.GET)
-    public String addNewAccount(Model model, @RequestParam(name = "client_id") Long id) {
-        List<Account> listOfAccount = new ArrayList<>();
-        Account account = new Account();
-        Client client = clientService.findById(id);
-        account.setAmountOfMoney(0.0);
-        account.setClient(client);
-        account = accountService.createNewAccount(account);
-        listOfAccount.add(account);
-        String clientName = client.getName();
-        model.addAttribute("client_name", clientName);
-        model.addAttribute("client_id", id);
-        return "accounts";
+    public String addNewAccount(@RequestParam(name = "client_id") Long id) {
+        clientService.addNewAccount(id);
+        return "redirect:/clients";
     }
 }
