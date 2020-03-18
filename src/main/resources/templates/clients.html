@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:custom="http://www.w3.org/1999/xhtml">
+<head>
+    <title>*INTEGRITY❤BANK*</title>
+
+    <style>
+        th, td {
+            padding: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<th:block th:include="mainboard"></th:block>
+
+<h2>Clients</h2>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Full Name</th>
+        <th>Age</th>
+        <th>Address</th>
+        <th>Accounts</th>
+    </tr>
+    <tr th:each="client : ${client}">
+        <td th:utext="${client.id}">..</td>
+        <td th:utext="${client.name}"></td>..</td>
+        <td th:utext="${client.age}">..</td>
+        <td th:utext="${client.address}">..</td>
+        <td>
+            <a th:href="@{/clientaccounts(client_id=${client.id})}"
+               custom:linkMethod="get">Accounts</a>
+        </td>
+    </tr>
+</table>
+
+<form action="/addClient" method="post">
+    <div class="container col-lg-4">
+
+        <h2>Add user</h2>
+        <p>Please fill in this form to create an account.</p>
+        <hr>
+
+        <label for="client_name"><b>Client Name</b></label>
+        <input type="text" placeholder="Enter Name" class="form-control"
+               id="client_name" name="client_name" required>
+
+        <label for="client_age"><b>Client Age</b></label>
+        <input type="number" placeholder="Enter Age" class="form-control"
+               id="client_age" name="client_age" required>
+
+        <label for="client_address"><b>Repeat Password</b></label>
+        <input type="text" placeholder="Enter Address" class="form-control"
+               id="client_address" name="client_address" required>
+        <hr>
+        <button type="submit" class="registerbtn preview-iframe">ADD CLIENT</button>
+    </div>
+</form>
+
+</body>
+</html>
