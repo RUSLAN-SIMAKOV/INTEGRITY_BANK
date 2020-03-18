@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>*INTEGRITYBANK*</title>
+    <title>*INTEGRITY❤BANK*</title>
 
     <style>
         th, td {
@@ -17,5 +17,25 @@
 
 <h2>Transactions</h2>
 
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Time Of Transaction</th>
+        <th>Money Transferred From Account</th>
+        <th>Money Transferred To Account</th>
+        <th>Amount Of Money</th>
+    </tr>
+    <tr th:each="transaction : ${transaction}">
+        <td th:utext="${transaction.id}">..</td>
+        <td th:utext="${transaction.timeOfTransaction}"></td>..</td>
+        <td th:utext="${transaction.transferMoneyFromAccount}">..</td>
+        <td th:utext="${transaction.transferMoneyToAccount}">..</td>
+        <td th:utext="${transaction.amountOfMoneyTransferred}">..</td>
+    </tr>
+</table>
+<hr>
+<p>If you see "Transfer Money From Account" equals  0 - money was added</p>
+<p>If you see "Transfer Money To Account" equals  0 - money was withdrawn</p>
+<hr>
 </body>
 </html>
