@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:custom="http://www.w3.org/1999/xhtml">
+<head>
+    <title>*INTEGRITY❤BANK*</title>
+
+    <style>
+        th, td {
+            padding: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<th:block th:include="mainboard"></th:block>
+
+<h2>Accounts</h2>
+<td th:utext="${client_name}">..</td>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Ammount of money</th>
+    </tr>
+    <tr th:each="account : ${account}">
+        <td th:utext="${account.id}">..</td>
+        <td th:utext="${account.amountOfMoney}">..</td>
+    </tr>
+
+</table>
+<td>
+    <a th:href="@{/addaccount(client_id=${client_id})}" custom:linkMethod="get">ADD NEW ACCOUNT</a>
+</td>
+
+</body>
+</html>
