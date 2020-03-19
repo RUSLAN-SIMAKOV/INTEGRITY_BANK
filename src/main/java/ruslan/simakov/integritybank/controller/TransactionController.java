@@ -5,11 +5,11 @@ import ruslan.simakov.integritybank.model.Transaction;
 import ruslan.simakov.integritybank.service.AccountService;
 import ruslan.simakov.integritybank.service.TransactionService;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -51,32 +51,56 @@ public class TransactionController {
     public String getAllTransactions(Model model, @RequestParam(
             value = "page", required = false, defaultValue = "0") Integer page,
                                      @RequestParam(
-            value = "limit", required = false, defaultValue = "10") Integer limit,
+                       value = "limit", required = false, defaultValue = "10") Integer limit,
                                      @RequestParam(
-            value = "sort", required = false, defaultValue = "id") String sort,
+                       value = "sort", required = false, defaultValue = "id") String sort,
                                      @RequestParam(
-            value = "order", required = false, defaultValue = "asc") String order,
+                       value = "order", required = false, defaultValue = "asc") String order,
                                      @RequestParam(
-            value = "timeAfter", required = false) LocalDateTime timeAfter,
+                       value = "timeAfter", required = false) String timeAfter,
                                      @RequestParam(
-            value = "timeBefore", required = false) LocalDateTime timeBefore,
+                       value = "timeBefore", required = false) String timeBefore,
                                      @RequestParam(
-            value = "accountId", required = false) Long accountId) {
+                       value = "accountId", required = false) Long accountId) {
 
+        List<Transaction> listOfTransactions = getSortedAndPaginatedListOfTransactions(page,
+                limit, sort, order);
+        listOfTransactions = getFiltratedListOfTransactions(listOfTransactions, timeAfter,
+                timeBefore, accountId);
+        model.addAttribute("transaction", listOfTransactions);
+        return "transactions";
+    }
+
+    private List<Transaction> getSortedAndPaginatedListOfTransactions(Integer page, Integer limit,
+                                                                      String sort, String order) {
         Sort.Direction orderDirection = Sort.Direction.fromString(order);
         Sort sortRequest = Sort.by(orderDirection, sort);
         Pageable pageRequest = PageRequest.of(page, limit, sortRequest);
-        List<Transaction> listOfTransactions = transactionService.getAllTransactions(pageRequest).toList();
-        if (timeAfter != null && timeBefore != null) {
-            listOfTransactions = listOfTransactions.stream().filter(t -> t.getTimeOfTransaction().isAfter(timeAfter))
-                .filter(t -> t.getTimeOfTransaction().isBefore(timeBefore))
-                .collect(Collectors.toList());}
+        return transactionService.getAllTransactions(pageRequest).toList();
+    }
+
+    private List<Transaction> getFiltratedListOfTransactions(List<Transaction> listOfTransactions,
+                                                             String  timeAfter,
+                                                             String timeBefore,
+                                                             Long accountId) {
+        if (timeAfter != null && timeBefore != null && !timeAfter.equals("") && !timeBefore.equals("")) {
+            LocalDateTime timeAfterParsed = parseDateTime(timeAfter);
+            LocalDateTime timeBeforeParsed = parseDateTime(timeBefore);
+            listOfTransactions = listOfTransactions.stream().filter(t -> t.getTimeOfTransaction()
+                    .isAfter(timeAfterParsed))
+                    .filter(t -> t.getTimeOfTransaction().isBefore(timeBeforeParsed))
+                    .collect(Collectors.toList());
+        }
         if (accountId != null) {
             listOfTransactions = listOfTransactions.stream()
                     .filter(t -> t.getTransferMoneyFromAccount().equals(accountId)
                             || t.getTransferMoneyToAccount().equals(accountId))
-                    .collect(Collectors.toList());}
-        model.addAttribute("transaction", listOfTransactions);
-        return "transactions";
+                    .collect(Collectors.toList());
+        }
+        return listOfTransactions;
+    }
+
+    LocalDateTime parseDateTime(String dateTime){
+        return LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 }
