@@ -4,9 +4,12 @@ import ruslan.simakov.integritybank.exception.TransferException;
 import ruslan.simakov.integritybank.model.Transaction;
 import ruslan.simakov.integritybank.service.AccountService;
 import ruslan.simakov.integritybank.service.TransactionService;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -52,12 +55,27 @@ public class TransactionController {
                                      @RequestParam(
             value = "sort", required = false, defaultValue = "id") String sort,
                                      @RequestParam(
-            value = "order", required = false, defaultValue = "asc") String order) {
+            value = "order", required = false, defaultValue = "asc") String order,
+                                     @RequestParam(
+            value = "timeAfter", required = false) LocalDateTime timeAfter,
+                                     @RequestParam(
+            value = "timeBefore", required = false) LocalDateTime timeBefore,
+                                     @RequestParam(
+            value = "accountId", required = false) Long accountId) {
 
         Sort.Direction orderDirection = Sort.Direction.fromString(order);
         Sort sortRequest = Sort.by(orderDirection, sort);
         Pageable pageRequest = PageRequest.of(page, limit, sortRequest);
-        List<Transaction> listOfTransactions = transactionService.getAllTransactions(pageRequest);
+        List<Transaction> listOfTransactions = transactionService.getAllTransactions(pageRequest).toList();
+        if (timeAfter != null && timeBefore != null) {
+            listOfTransactions = listOfTransactions.stream().filter(t -> t.getTimeOfTransaction().isAfter(timeAfter))
+                .filter(t -> t.getTimeOfTransaction().isBefore(timeBefore))
+                .collect(Collectors.toList());}
+        if (accountId != null) {
+            listOfTransactions = listOfTransactions.stream()
+                    .filter(t -> t.getTransferMoneyFromAccount().equals(accountId)
+                            || t.getTransferMoneyToAccount().equals(accountId))
+                    .collect(Collectors.toList());}
         model.addAttribute("transaction", listOfTransactions);
         return "transactions";
     }
