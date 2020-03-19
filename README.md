@@ -57,9 +57,9 @@ Main page is at URL: .../{context_path}/clients
 
 If you want to start application from command line:
 Start command line mode, go to the folder with pom.xml and enter the mvn clean package command
-Maven will generate an executable jar file called integritybank-0.0.1-SNAPSHOT.wa
+Maven will generate an executable jar file called integritybank-0.0.1-SNAPSHOT.war
 Go to the cd target folder
-Then run the jar file: java -jar integritybank-0.0.1-SNAPSHOT.wa
+Then run the jar file: java -jar integritybank-0.0.1-SNAPSHOT.war
 Go to the browser at http://localhost:8080/clients
 Enjoy to test everything)
 ## Author
