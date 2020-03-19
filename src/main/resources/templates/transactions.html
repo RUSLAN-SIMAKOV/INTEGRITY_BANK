@@ -17,6 +17,54 @@
 
 <h2>Transactions</h2>
 
+<form action="/trans" method="get">
+    <div class="container col-lg-4">
+
+        <p>(Optional) Please fill in this form to make pagination.</p>
+        <hr>
+
+        <label for="page"><b>Page Number</b></label>
+        <input type="number" placeholder="Enter Page" class="form-control"
+               id="page" name="page">
+
+        <label for="limit"><b>Transactions Limit</b></label>
+        <input type="number" placeholder="Enter Limit" class="form-control"
+               id="limit" name="limit">
+
+        <label for="sort" id="sort"><b>Sort By</b></label>
+        <select size="2" multiple name="sort">
+            <option value="amountOfMoneyTransferred">MONEY</option>
+            <option value="transferMoneyToAccount">TO ACCOUNT</option>
+            <option value="transferMoneyFromAccount">FROM ACCOUNT</option>
+            <option value="timeOfTransaction">TIME</option>
+            <option selected value="id">ID</option>
+        </select>
+
+        <label for="order" id="order"><b>Order By</b></label>
+        <select size="1" multiple name="order">
+            <option value="desc">DESCEND</option>
+            <option selected value="asc">ASCEND</option>
+        </select>
+
+        </br>
+
+        <label for="timeBefore"><b>Filter: Time Before</b></label>
+        <input type="text" placeholder="2020-03-19T00:37:46" class="form-control"
+               id="timeBefore" name="timeBefore">
+
+        <label for="timeAfter"><b>Filter: Time After</b></label>
+        <input type="text" placeholder="2019-03-19T00:37:46" class="form-control"
+               id="timeAfter" name="timeAfter">
+
+        <label for="accountId"><b>Filter: Account</b></label>
+        <input type="number" placeholder="Enter Account" class="form-control"
+               id="accountId" name="accountId">
+
+        <hr>
+        <button type="submit" class="registerbtn preview-iframe">DO IT!</button>
+    </div>
+</form>
+
 <table border="1">
     <tr>
         <th>ID</th>

@@ -6,6 +6,7 @@ import ruslan.simakov.integritybank.service.TransactionService;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ public class TransactionServiceImpl implements TransactionService {
   private TransactionRepository transactionRepository;
 
     @Override
-    public List<Transaction> getAllTransactions(Pageable pageable) {
-        return transactionRepository.findAll();
+    public Page<Transaction> getAllTransactions(Pageable pageable) {
+        return transactionRepository.findAll(pageable);
     }
 
   @Override
